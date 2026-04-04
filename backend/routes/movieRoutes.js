@@ -4,10 +4,10 @@ import { verifyToken, isAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// GET all movies — public, no auth needed so anyone can browse
+// GET all movies
 router.get("/", async (req, res) => {
   try {
-    const movies = await Movie.find();
+    const movies = await Movie.find().populate("genres", "name");
     res.json(movies);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 // GET a single movie by ID
 router.get("/:id", async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id).populate("genres", "name");
     if (!movie) return res.status(404).json({ message: "Movie not found" });
     res.json(movie);
   } catch (err) {
