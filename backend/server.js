@@ -3,12 +3,13 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-// Route imports (you'll create these next)
+// Route imports
 import movieRoutes from "./routes/movieRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import theaterRoutes from "./routes/theaterRoutes.js";
 import showtimeRoutes from "./routes/showtimeRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import genreRoutes from "./routes/genreRoutes.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/movies", movieRoutes);
 app.use("/api/theaters", theaterRoutes);
 app.use("/api/showtimes", showtimeRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/genres", genreRoutes);
 
 // Basic test route
 app.get("/", (req, res) => {
