@@ -1,5 +1,5 @@
 // src/services/api.js
-const API_URL = 'http://localhost:5000/api'; // This will be provided by your teammate
+const API_URL = 'http://localhost:5000/api';
 // AUTH
 
 export const loginUser = async (username, password) => {
@@ -63,6 +63,39 @@ export const updateMovie = async (id, movieData, token) => {
 
 export const deleteMovie = async (id, token) => {
   const response = await fetch(`${API_URL}/movies/${id}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` },
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message);
+  return data;
+};
+
+// ---- GENRES ----
+
+export const fetchGenres = async () => {
+  const response = await fetch(`${API_URL}/genres`);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message);
+  return data;
+};
+
+export const createGenre = async (genreData, token) => {
+  const response = await fetch(`${API_URL}/genres`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(genreData),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message);
+  return data;
+};
+
+export const deleteGenre = async (id, token) => {
+  const response = await fetch(`${API_URL}/genres/${id}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${token}` },
   });
