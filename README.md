@@ -12,10 +12,10 @@ This document provides the necessary setup instructions for group members and gr
 Before you begin, ensure you have the following installed on your machine:
 * Node.js (https://nodejs.org)
 * MongoDB (installed and running locally) (https://www.mongodb.com/try/download/community)
-* MongoDB Compass (for database GUI) (https://www.mongodb.com/try/download/compass)
-
-## Setup Instructions
+  - Do Full Installation for MongoDB and Install as Service
 ```
+## Setup Instructions
+
 ### Step 1: Download Repo (go to code>download ZIP), 
 Extract ZIP file
 Open Command Prompt and cd into extracted folder
