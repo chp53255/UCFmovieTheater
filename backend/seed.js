@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import User from "./models/User.js";
 import Movie from "./models/Movie.js";
+import Genre from "./models/Genre.js";
 import Theater from "./models/Theater.js";
 import Showtime from "./models/Showtime.js";
 import Booking from "./models/Booking.js";
@@ -17,6 +18,7 @@ const seedDB = async () => {
     // Clear existing data
     await User.deleteMany({});
     await Movie.deleteMany({});
+    await Genre.deleteMany({});
     await Theater.deleteMany({});
     await Showtime.deleteMany({});
     await Booking.deleteMany({});
@@ -34,13 +36,50 @@ const seedDB = async () => {
     ]);
     console.log("Users seeded");
 
-    // Create movies
+    // Create genres
+    const genres = await Genre.insertMany([
+      { name: "Action" },
+      { name: "Sci-Fi" },
+      { name: "Drama" },
+      { name: "Animation" },
+      { name: "Comedy" },
+      { name: "Thriller" },
+      { name: "Adventure" },
+    ]);
+    console.log("Genres seeded");
+
+    // Create movies with genre references (many-to-many)
     const movies = await Movie.insertMany([
-      { title: "The Batman", description: "Gotham's vigilante detective uncovers corruption.", duration: 176 },
-      { title: "Dune: Part Two", description: "Paul Atreides unites with the Fremen.", duration: 166 },
-      { title: "Oppenheimer", description: "The story of the atomic bomb's creation.", duration: 180 },
-      { title: "Spider-Man: Across the Spider-Verse", description: "Miles Morales journeys across the multiverse.", duration: 140 },
-      { title: "Inside Out 2", description: "Riley faces new emotions as a teenager.", duration: 100 },
+      {
+        title: "The Batman",
+        description: "Gotham's vigilante detective uncovers corruption.",
+        duration: 176,
+        genres: [genres[0]._id, genres[2]._id, genres[5]._id], // Action, Drama, Thriller
+      },
+      {
+        title: "Dune: Part Two",
+        description: "Paul Atreides unites with the Fremen.",
+        duration: 166,
+        genres: [genres[1]._id, genres[6]._id, genres[2]._id], // Sci-Fi, Adventure, Drama
+      },
+      {
+        title: "Oppenheimer",
+        description: "The story of the atomic bomb's creation.",
+        duration: 180,
+        genres: [genres[2]._id, genres[5]._id], // Drama, Thriller
+      },
+      {
+        title: "Spider-Man: Across the Spider-Verse",
+        description: "Miles Morales journeys across the multiverse.",
+        duration: 140,
+        genres: [genres[0]._id, genres[3]._id, genres[6]._id], // Action, Animation, Adventure
+      },
+      {
+        title: "Inside Out 2",
+        description: "Riley faces new emotions as a teenager.",
+        duration: 100,
+        genres: [genres[3]._id, genres[4]._id], // Animation, Comedy
+      },
     ]);
     console.log("Movies seeded");
 
