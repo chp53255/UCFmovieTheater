@@ -2,7 +2,8 @@
 ```
 # UCF Movie Theater Ticketing Platform
 
-This repository contains the source code for a single-page web application (SPA) built using the MERN stack (MongoDB, Express, React, Node.js). This project is being developed for our Web Development class and serves as a movie ticketing platform. 
+This repository contains the source code for a single-page web application (SPA)
+built using the MERN stack (MongoDB, Express, React, Node.js). 
 
 This document provides the necessary setup instructions for group members and graders to run the application locally.
 
