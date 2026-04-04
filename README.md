@@ -13,9 +13,8 @@ Before you begin, ensure you have the following installed on your machine:
 * MongoDB (installed and running locally) (https://www.mongodb.com/try/download/community)
 
 ## Setup Instructions
-
-### Step 1: Download Repo(go to code>download ZIP)
 ```
+### Step 1: Download Repo(go to code>download ZIP)
 
 
 ### Step 2: Install Backend Dependencies and Seed Database
