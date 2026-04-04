@@ -14,6 +14,12 @@ const movieSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    genres: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Genre",
+      },
+    ],
   },
   { timestamps: true }
 );
