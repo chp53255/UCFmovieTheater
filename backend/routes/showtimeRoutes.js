@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", verifyToken, async (req, res) => {
   try {
     const showtimes = await Showtime.find()
-      .populate("movie", "title description duration")
+      .populate("movie", "title description duration posterURL")
       .populate("theater", "name totalSeats");
     res.json(showtimes);
   } catch (err) {
@@ -20,7 +20,7 @@ router.get("/", verifyToken, async (req, res) => {
 router.get("/movie/:movieId", verifyToken, async (req, res) => {
   try {
     const showtimes = await Showtime.find({ movie: req.params.movieId })
-      .populate("movie", "title description duration")
+      .populate("movie", "title description duration posterURL")
       .populate("theater", "name totalSeats");
     res.json(showtimes);
   } catch (err) {
@@ -32,7 +32,7 @@ router.get("/movie/:movieId", verifyToken, async (req, res) => {
 router.get("/:id", verifyToken, async (req, res) => {
   try {
     const showtime = await Showtime.findById(req.params.id)
-      .populate("movie", "title description duration")
+      .populate("movie", "title description duration posterURL")
       .populate("theater", "name totalSeats");
     if (!showtime) return res.status(404).json({ message: "Showtime not found" });
     res.json(showtime);
@@ -47,7 +47,10 @@ router.post("/", verifyToken, isAdmin, async (req, res) => {
     const { movie, theater, showDate, showTime, price } = req.body;
     const showtime = new Showtime({ movie, theater, showDate, showTime, price });
     const savedShowtime = await showtime.save();
-    res.status(201).json(savedShowtime);
+    const populatedShowtime = await Showtime.findById(savedShowtime._id)
+      .populate("movie", "title description duration posterURL")
+      .populate("theater", "name totalSeats");
+    res.status(201).json(populatedShowtime);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -60,7 +63,10 @@ router.put("/:id", verifyToken, isAdmin, async (req, res) => {
       req.params.id,
       req.body,
       { new: true, runValidators: true }
-    );
+    )
+    .populate("movie", "title description duration posterURL")
+    .populate("theater", "name totalSeats");
+    
     if (!updatedShowtime) return res.status(404).json({ message: "Showtime not found" });
     res.json(updatedShowtime);
   } catch (err) {
