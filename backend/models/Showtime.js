@@ -24,6 +24,10 @@ const showtimeSchema = new mongoose.Schema(
       type: Number,
       default: 10,
     },
+    availableSeats: {
+      type: Number,
+      default: 50,
+    },
   },
   { timestamps: true }
 );
