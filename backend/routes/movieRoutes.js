@@ -7,7 +7,7 @@ const router = express.Router();
 // GET all movies
 router.get("/", async (req, res) => {
   try {
-    const movies = await Movie.find();
+    const movies = await Movie.find().populate("genres", "name");
     res.json(movies);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 // GET a single movie by ID
 router.get("/:id", async (req, res) => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id).populate("genres", "name");
     if (!movie) return res.status(404).json({ message: "Movie not found" });
     res.json(movie);
   } catch (err) {
@@ -28,9 +28,10 @@ router.get("/:id", async (req, res) => {
 // POST create a new movie — admin only
 router.post("/", verifyToken, isAdmin, async (req, res) => {
   try {
-    const { title, description, duration } = req.body;
-    const movie = new Movie({ title, description, duration });
+    const { title, description, duration, posterUrl, genres } = req.body;
+    const movie = new Movie({ title, description, duration, posterUrl, genres });
     const savedMovie = await movie.save();
+    const populatedMovie = await Movie.findById(savedMovie._id).populate("genres", "name");
     res.status(201).json(savedMovie);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -44,7 +45,7 @@ router.put("/:id", verifyToken, isAdmin, async (req, res) => {
       req.params.id,
       req.body,
       { new: true, runValidators: true }
-    );
+    ).populate("genres", "name");
     if (!updatedMovie) return res.status(404).json({ message: "Movie not found" });
     res.json(updatedMovie);
   } catch (err) {

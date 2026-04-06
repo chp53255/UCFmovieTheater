@@ -14,6 +14,10 @@ const movieSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    posterUrl: {
+      type: String,
+      default: "",
+    },
     genres: [
       {
         type: mongoose.Schema.Types.ObjectId,
