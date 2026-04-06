@@ -1,5 +1,6 @@
 import express from "express";
 import Booking from "../models/Booking.js";
+import Showtime from "../models/Showtime.js";
 import { verifyToken, isAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -61,7 +62,37 @@ router.get("/:id", verifyToken, async (req, res) => {
 // POST create a booking — any logged-in user
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const { showtime, seats, totalPrice } = req.body;
+    const { showtime, seats } = req.body;
+
+    if (!seats || seats.length === 0) {
+      return res.status(400).json({ message: "At least one seat must be selected" });
+    }
+
+    const uniqueSeats = [...new Set(seats)];
+    if (uniqueSeats.length !== seats.length) {
+      return res.status(400).json({ message: "Duplicate seats are not allowed" });
+    }
+
+    const selectedShowtime = await Showtime.findById(showtime);
+    if (!selectedShowtime) {
+      return res.status(404).json({ message: "Showtime not found" });
+    }
+
+    const existingBookings = await Booking.find({ showtime });
+    const alreadyBookedSeats = existingBookings.flatMap((booking) => booking.seats);
+
+    const conflictingSeats = seats.filter((seat) => alreadyBookedSeats.includes(seat));
+      if (conflictingSeats.length > 0) {
+        return res.status(400).json({
+          message: `These seats are already booked: ${conflictingSeats.join(", ")}`,
+        });
+      }
+
+    if (selectedShowtime.availableSeats < seats.length) {
+      return res.status(400).json({ message: "Not enough available seats" });
+    }
+
+    const totalPrice = selectedShowtime.price * seats.length;
 
     const booking = new Booking({
       customerName: req.user.username, // tied to the logged-in user
@@ -71,10 +102,14 @@ router.post("/", verifyToken, async (req, res) => {
     });
 
     const savedBooking = await booking.save();
+
+    selectedShowtime.availableSeats -= seats.length;
+    await selectedShowtime.save();
+
     res.status(201).json(savedBooking);
   } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
+      res.status(400).json({ message: err.message });
+    }
 });
 
 // PUT update a booking — user can only update their own
@@ -108,6 +143,13 @@ router.delete("/:id", verifyToken, async (req, res) => {
     // Ownership check
     if (req.user.role !== "admin" && booking.customerName !== req.user.username) {
       return res.status(403).json({ message: "Not authorized to delete this booking" });
+    }
+
+    const selectedShowtime = await Showtime.findById(booking.showtime);
+
+    if (selectedShowtime) {
+      selectedShowtime.availableSeats += booking.seats.length;
+      await selectedShowtime.save();
     }
 
     await Booking.findByIdAndDelete(req.params.id);
