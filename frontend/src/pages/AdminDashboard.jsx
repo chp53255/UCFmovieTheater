@@ -40,8 +40,14 @@ const AdminDashboard = () => {
           <p>Assign movies to theaters and schedule times.</p>
           <Link to="/admin/showtimes" style={buttonStyle}>Manage Showtimes</Link>
         </div>
+		
+		<div style={cardStyle}>
+		  <h3>Genres</h3>
+		  <p>Add or remove movie genres for the many-to-many relationship.</p>
+		  <Link to="/admin/genres" style={buttonStyle}>Manage Genres</Link>
       </div>
     </div>
+  </div>
   );
 };
 
