@@ -54,31 +54,36 @@ const seedDB = async () => {
         title: "The Batman",
         description: "Gotham's vigilante detective uncovers corruption.",
         duration: 176,
-        genres: [genres[0]._id, genres[2]._id, genres[5]._id], // Action, Drama, Thriller
+        posterUrl: "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+        genres: [genres[0]._id, genres[2]._id, genres[5]._id],
       },
       {
         title: "Dune: Part Two",
         description: "Paul Atreides unites with the Fremen.",
         duration: 166,
-        genres: [genres[1]._id, genres[6]._id, genres[2]._id], // Sci-Fi, Adventure, Drama
+        posterUrl: "https://image.tmdb.org/t/p/w600_and_h900_face/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
+        genres: [genres[1]._id, genres[6]._id, genres[2]._id],
       },
       {
         title: "Oppenheimer",
         description: "The story of the atomic bomb's creation.",
         duration: 180,
-        genres: [genres[2]._id, genres[5]._id], // Drama, Thriller
+        posterUrl: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+        genres: [genres[2]._id, genres[5]._id],
       },
       {
         title: "Spider-Man: Across the Spider-Verse",
         description: "Miles Morales journeys across the multiverse.",
         duration: 140,
-        genres: [genres[0]._id, genres[3]._id, genres[6]._id], // Action, Animation, Adventure
+        posterUrl: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+        genres: [genres[0]._id, genres[3]._id, genres[6]._id],
       },
       {
         title: "Inside Out 2",
         description: "Riley faces new emotions as a teenager.",
         duration: 100,
-        genres: [genres[3]._id, genres[4]._id], // Animation, Comedy
+        posterUrl: "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
+        genres: [genres[3]._id, genres[4]._id],
       },
     ]);
     console.log("Movies seeded");
