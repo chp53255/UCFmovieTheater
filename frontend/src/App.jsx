@@ -10,6 +10,7 @@ import TheaterManager from './components/admin/TheaterManager.jsx';
 import ShowtimeManager from './components/admin/ShowtimeManager.jsx';
 import BookingList from './components/user/BookingList.jsx';
 import ShowtimePicker from './components/user/ShowtimePicker.jsx';
+import GenreManager from './components/admin/GenreManager.jsx';
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/theaters" element={<TheaterManager />} />
           <Route path="/admin/showtimes" element={<ShowtimeManager />} />
-
+		  <Route path="/admin/genres" element={<GenreManager />} />
+		  
           {/* User */}
           <Route path="/my-bookings" element={<BookingList />} />
           <Route path="/movie/:id/showtimes" element={<ShowtimePicker />} />
