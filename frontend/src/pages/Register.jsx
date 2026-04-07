@@ -23,28 +23,50 @@ function Register() {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Create an Account</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        /><br /><br />
-        <button type="submit">Register</button>
-      </form>
-      <p>Already have an account? <Link to="/">Login here</Link></p>
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-logo">🎬 MoviePass</div>
+        <div className="auth-tagline">Join and start booking today.</div>
+
+        <h2>Create Account</h2>
+
+        {error && <div className="auth-error">{error}</div>}
+        {success && <div className="auth-success">{success}</div>}
+
+        <form onSubmit={handleRegister}>
+          <div style={{ marginBottom: '16px' }}>
+            <label>Username</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Choose a username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+
+          <div style={{ marginBottom: '24px' }}>
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Choose a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn-auth">
+            Create Account
+          </button>
+        </form>
+
+        <div className="auth-link">
+          Already have an account? <Link to="/">Sign in</Link>
+        </div>
+      </div>
     </div>
   );
 }
