@@ -21,14 +21,24 @@ function Navbar() {
       alignItems: 'center',
     }}>
       <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none', fontSize: '20px', fontWeight: 'bold' }}>
-        MoviePass
+        🎬 MoviePass
       </Link>
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         {user ? (
           <>
-            <span>Welcome, {user.username}</span>
-            <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
+            <Link to="/dashboard" style={linkStyle}>Movies</Link>
+            <Link to="/my-bookings" style={linkStyle}>My Bookings</Link>
+
+            {/* Admin-only link */}
+            {user.role === 'admin' && (
+              <Link to="/admin" style={{ color: 'gold', textDecoration: 'none', fontWeight: 'bold' }}>
+                Admin Panel
+              </Link>
+            )}
+
+            <span style={{ color: '#aaa', fontSize: '14px' }}>{user.username}</span>
+
             <button
               onClick={handleLogout}
               style={{
@@ -46,13 +56,15 @@ function Navbar() {
           </>
         ) : (
           <>
-            <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-            <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Register</Link>
+            <Link to="/" style={linkStyle}>Login</Link>
+            <Link to="/register" style={linkStyle}>Register</Link>
           </>
         )}
       </div>
     </nav>
   );
 }
+
+const linkStyle = { color: 'white', textDecoration: 'none' };
 
 export default Navbar;
