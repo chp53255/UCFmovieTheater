@@ -11,10 +11,10 @@ const MovieCard = ({ movie }) => {
         style={imageStyle}
       />
 
-      <div style={{ padding: '15px' }}>
+      <div style={contentStyle}>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '1.1rem' }}>{movie.title}</h3>
 
-        {/* Genre Tags — genres is an array of { _id, name } objects */}
+        {/* Genre Tags */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '8px' }}>
           {movie.genres && movie.genres.map((g) => (
             <span key={g._id} style={genreTagStyle}>
@@ -23,20 +23,23 @@ const MovieCard = ({ movie }) => {
           ))}
         </div>
 
-        <p style={{ color: '#666', fontSize: '0.85rem', height: '36px', overflow: 'hidden', margin: '0 0 10px 0' }}>
+        <p style={descriptionStyle}>
           {movie.description}
         </p>
 
-        <p style={{ fontSize: '0.8rem', color: '#999', margin: '0 0 12px 0' }}>
-          {movie.duration} min
-        </p>
+        {/* Spacer pushes duration + button to the bottom */}
+        <div style={{ marginTop: 'auto' }}>
+          <p style={{ fontSize: '0.8rem', color: '#999', margin: '0 0 12px 0' }}>
+            {movie.duration} min
+          </p>
 
-        <Link
-          to={`/movie/${movie._id}/showtimes`}
-          style={buttonStyle}
-        >
-          Book Ticket
-        </Link>
+          <Link
+            to={`/movie/${movie._id}/showtimes`}
+            style={buttonStyle}
+          >
+            Book Ticket
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -49,6 +52,16 @@ const cardStyle = {
   backgroundColor: '#fff',
   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
   transition: 'transform 0.2s ease',
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
+};
+
+const contentStyle = {
+  padding: '15px',
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
 };
 
 const imageStyle = {
@@ -56,6 +69,16 @@ const imageStyle = {
   height: '340px',
   objectFit: 'cover',
   display: 'block',
+};
+
+const descriptionStyle = {
+  color: '#666',
+  fontSize: '0.85rem',
+  margin: '0 0 10px 0',
+  display: '-webkit-box',
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
 };
 
 const genreTagStyle = {
