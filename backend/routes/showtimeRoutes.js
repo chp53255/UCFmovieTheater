@@ -1,5 +1,6 @@
 import express from "express";
 import Showtime from "../models/Showtime.js";
+import Theater from "../models/Theater.js";
 import { verifyToken, isAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -45,7 +46,20 @@ router.get("/:id", verifyToken, async (req, res) => {
 router.post("/", verifyToken, isAdmin, async (req, res) => {
   try {
     const { movie, theater, showDate, showTime, price } = req.body;
-    const showtime = new Showtime({ movie, theater, showDate, showTime, price });
+
+    // Look up theater to get its actual seat count
+    const theaterDoc = await Theater.findById(theater);
+    if (!theaterDoc) return res.status(404).json({ message: "Theater not found" });
+
+    const showtime = new Showtime({
+      movie,
+      theater,
+      showDate,
+      showTime,
+      price,
+      availableSeats: theaterDoc.totalSeats,
+    });
+
     const savedShowtime = await showtime.save();
     const populatedShowtime = await Showtime.findById(savedShowtime._id)
       .populate("movie", "title description duration posterURL")
@@ -78,7 +92,7 @@ router.put("/:id", verifyToken, isAdmin, async (req, res) => {
 router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const deletedShowtime = await Showtime.findByIdAndDelete(req.params.id);
-    if (!deletedShowtime) return res.status(404).json({ message: "Showtime not found" });
+    if (!deletedShowtime) return res.status(404).json({ message: "Showtime deleted" });
     res.json({ message: "Showtime deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
