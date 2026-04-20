@@ -121,7 +121,7 @@ const ShowtimePicker = () => {
                   <div style={{
                     display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px', maxWidth: '400px',
                   }}>
-                    {generateSeatLabels(st.theater?.totalSeats || 50).slice(0, 30).map((seat) => (
+                    {generateSeatLabels(Math.min(st.theater?.totalSeats || 50, 100)).map((seat) => (
                       <button
                         key={seat}
                         type="button"
